@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useState, useEffect } from "react";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { Briefcase, Loader2 } from "lucide-react";
 
 interface AuthFormProps {
@@ -10,14 +9,21 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Redirect to home if Supabase isn't configured (e.g. GitHub Pages demo)
+  useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      window.location.href = "/";
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isSupabaseConfigured()) return;
     setError("");
     setLoading(true);
 
