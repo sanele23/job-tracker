@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { Briefcase, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { Briefcase, Loader2 } from "lucide-react";
 
 interface AuthFormProps {
-  mode: 'login' | 'signup';
+  mode: "login" | "signup";
 }
 
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError]       = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     const supabase = createClient();
 
     const { error: authError } =
-      mode === 'login'
+      mode === "login"
         ? await supabase.auth.signInWithPassword({ email, password })
         : await supabase.auth.signUp({ email, password });
 
@@ -34,8 +34,8 @@ export function AuthForm({ mode }: AuthFormProps) {
       return;
     }
 
-    router.push('/');
-    router.refresh();
+    // Full page reload to re-initialize auth state cleanly
+    window.location.href = "/";
   };
 
   return (
@@ -48,7 +48,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </div>
           <h1 className="text-2xl font-bold text-foreground">JobTracker</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {mode === 'login' ? 'Welcome back' : 'Create your account'}
+            {mode === "login" ? "Welcome back" : "Create your account"}
           </p>
         </div>
 
@@ -92,22 +92,28 @@ export function AuthForm({ mode }: AuthFormProps) {
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
-            {mode === 'login' ? 'Sign In' : 'Sign Up'}
+            {mode === "login" ? "Sign In" : "Sign Up"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          {mode === 'login' ? (
+          {mode === "login" ? (
             <>
-              Don&apos;t have an account?{' '}
-              <a href="/signup" className="text-primary font-medium hover:underline">
+              Don&apos;t have an account?{" "}
+              <a
+                href="/signup"
+                className="text-primary font-medium hover:underline"
+              >
                 Sign up
               </a>
             </>
           ) : (
             <>
-              Already have an account?{' '}
-              <a href="/login" className="text-primary font-medium hover:underline">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="text-primary font-medium hover:underline"
+              >
                 Sign in
               </a>
             </>

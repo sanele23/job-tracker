@@ -8,17 +8,17 @@ A polished **Kanban-style job application tracker** built with the modern React 
 
 ## ✨ Features
 
-| Feature | Details |
-|---|---|
-| **Kanban board** | 5 columns: Wishlist → Applied → Interview → Offer → Rejected |
-| **Drag & drop** | Move cards between columns with `@dnd-kit` |
-| **Full CRUD** | Add / Edit / Delete jobs via validated forms |
-| **Search & filter** | Instant search across company, role, tags + status filter |
-| **Dashboard stats** | Live counters per status in a top bar |
-| **Dark mode** | System-aware + manual toggle, zero flash |
-| **Responsive** | Mobile-first — columns scroll horizontally on small screens |
-| **Auth-ready** | Login/signup pages wired to Supabase Auth (opt-in) |
-| **Persistence** | localStorage in demo mode · Supabase Postgres when connected |
+| Feature             | Details                                                                     |
+| ------------------- | --------------------------------------------------------------------------- |
+| **Kanban board**    | 5 columns: Wishlist → Applied → Interview → Offer → Rejected                |
+| **Drag & drop**     | Move cards between columns with `@dnd-kit`                                  |
+| **Full CRUD**       | Add / Edit / Delete jobs via validated forms                                |
+| **Search & filter** | Instant search across company, role, tags + status filter                   |
+| **Dashboard stats** | Live counters per status in a top bar                                       |
+| **Dark mode**       | System-aware + manual toggle, zero flash                                    |
+| **Responsive**      | Mobile-first — columns scroll horizontally on small screens                 |
+| **Auth-ready**      | Login/signup with Supabase Auth · sign-out · session management             |
+| **Persistence**     | localStorage in demo mode · real-time Supabase Postgres sync when connected |
 
 ---
 
@@ -52,10 +52,15 @@ The app boots in **demo mode** with 8 sample job applications. Data lives in loc
 
 ## 🔐 Connecting Supabase (optional)
 
-1. Create a project at [supabase.com](https://supabase.com)
-2. Copy `.env.local.example` → `.env.local` and fill in your keys
-3. Run the SQL in `supabase/migrations/001_create_jobs.sql`
-4. Restart dev server — auth pages (`/login`, `/signup`) become active
+1. Create a free project at [supabase.com](https://supabase.com)
+2. Copy `.env.local.example` → `.env.local` and fill in your keys:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+3. Run the SQL in `supabase/migrations/001_create_jobs.sql` via the Supabase SQL Editor
+4. (Optional) Disable email confirmation: **Authentication → Providers → Email → Toggle off "Confirm email"**
+5. Restart dev server — sign up at `/signup`, then all CRUD syncs to Postgres in real-time
 
 ---
 
@@ -67,14 +72,24 @@ src/
 ├── components/
 │   ├── board/                 # Kanban board, columns, cards, forms
 │   ├── dashboard/             # Stats bar, search & filters
-│   ├── layout/                # Header
+│   ├── layout/                # Header (auth-aware)
 │   ├── auth/                  # Auth form
 │   └── ui/                    # Modal
-├── hooks/                     # useTheme
+├── hooks/                     # useTheme, useAuth
 ├── lib/                       # Utils, constants, validations, Supabase
-├── store/                     # Zustand store
+├── store/                     # Zustand store (with Supabase sync)
 └── types/                     # TypeScript interfaces
 ```
+
+---
+
+## 🌐 Deployment
+
+The app auto-deploys to **GitHub Pages** on every push to `main` via GitHub Actions (demo mode, static export).
+
+Live at: **https://sanele23.github.io/job-tracker**
+
+For full-featured deployment (with Supabase auth + database), use [Vercel](https://vercel.com) and set the env variables in the Vercel dashboard.
 
 ---
 
