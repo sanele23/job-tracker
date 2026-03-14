@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗂️ JobTracker
 
-## Getting Started
+A polished **Kanban-style job application tracker** built with the modern React stack. Drag cards between columns, CRUD your applications, search & filter, toggle dark mode — all backed by **Zustand** state + optional **Supabase** persistence & auth.
 
-First, run the development server:
+> **Demo mode** — the app works instantly with `npm run dev`. No backend setup required.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| **Kanban board** | 5 columns: Wishlist → Applied → Interview → Offer → Rejected |
+| **Drag & drop** | Move cards between columns with `@dnd-kit` |
+| **Full CRUD** | Add / Edit / Delete jobs via validated forms |
+| **Search & filter** | Instant search across company, role, tags + status filter |
+| **Dashboard stats** | Live counters per status in a top bar |
+| **Dark mode** | System-aware + manual toggle, zero flash |
+| **Responsive** | Mobile-first — columns scroll horizontally on small screens |
+| **Auth-ready** | Login/signup pages wired to Supabase Auth (opt-in) |
+| **Persistence** | localStorage in demo mode · Supabase Postgres when connected |
+
+---
+
+## 🛠️ Tech Stack
+
+```
+Next.js 16 (App Router)    ─  framework
+TypeScript                 ─  type safety
+Tailwind CSS v4            ─  styling via design tokens
+Zustand                    ─  lightweight state management
+@dnd-kit                   ─  accessible drag-and-drop
+React Hook Form + Zod      ─  form handling & validation
+Framer Motion              ─  layout animations
+Supabase                   ─  auth + database (optional)
+Lucide React               ─  icons
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Quick Start
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+# → http://localhost:3000
+```
 
-## Learn More
+The app boots in **demo mode** with 8 sample job applications. Data lives in localStorage.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔐 Connecting Supabase (optional)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create a project at [supabase.com](https://supabase.com)
+2. Copy `.env.local.example` → `.env.local` and fill in your keys
+3. Run the SQL in `supabase/migrations/001_create_jobs.sql`
+4. Restart dev server — auth pages (`/login`, `/signup`) become active
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                       # Next.js App Router pages
+├── components/
+│   ├── board/                 # Kanban board, columns, cards, forms
+│   ├── dashboard/             # Stats bar, search & filters
+│   ├── layout/                # Header
+│   ├── auth/                  # Auth form
+│   └── ui/                    # Modal
+├── hooks/                     # useTheme
+├── lib/                       # Utils, constants, validations, Supabase
+├── store/                     # Zustand store
+└── types/                     # TypeScript interfaces
+```
+
+---
+
+## 📜 License
+
+MIT
