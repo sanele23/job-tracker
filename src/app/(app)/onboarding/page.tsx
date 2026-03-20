@@ -134,6 +134,15 @@ const BUDGET_OPTIONS: {
 const inputClass =
   "w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors";
 
+// Extend the Window interface to include __profileStore
+declare global {
+  interface Window {
+    __profileStore?: {
+      loadFromSupabase: (userId: string) => void;
+    };
+  }
+}
+
 export default function OnboardingPage() {
   const router = useRouter();
   const { user } = useAuth();
@@ -205,7 +214,6 @@ export default function OnboardingPage() {
     if (user?.id) {
       setTimeout(() => {
         // Delay to allow upsert to complete
-        // @ts-ignore
         if (typeof window !== "undefined" && window.__profileStore) {
           window.__profileStore.loadFromSupabase(user.id);
         }
