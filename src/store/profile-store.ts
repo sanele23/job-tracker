@@ -53,20 +53,26 @@ const DEMO_PROFILE: UserProfile = {
 async function saveProfileToSupabase(profile: UserProfile, userId: string) {
   if (!isSupabaseConfigured()) return;
   const supabase = await getSupabase();
-  await supabase.from("profiles").upsert(
-    {
-      user_id: userId,
-      name: profile.name,
-      experience_level: profile.experienceLevel,
-      current_role: profile.currentRole,
-      education_field: profile.educationField,
-      interests: profile.interests,
-      weekly_learning_hours: profile.weeklyLearningHours,
-      budget_preference: profile.budgetPreference,
-      has_completed_onboarding: profile.hasCompletedOnboarding,
-    },
-    { onConflict: "user_id" },
-  );
+  const upsertData = {
+    user_id: userId,
+    name: profile.name,
+    experience_level: profile.experienceLevel,
+    current_role: profile.currentRole,
+    education_field: profile.educationField,
+    interests: profile.interests,
+    weekly_learning_hours: profile.weeklyLearningHours,
+    budget_preference: profile.budgetPreference,
+    has_completed_onboarding: profile.hasCompletedOnboarding,
+  };
+  console.log("[saveProfileToSupabase] Upserting profile:", upsertData);
+  const { error } = await supabase
+    .from("profiles")
+    .upsert(upsertData, { onConflict: "user_id" });
+  if (error) {
+    console.error("[saveProfileToSupabase] Upsert error:", error);
+  } else {
+    console.log("[saveProfileToSupabase] Upsert successful");
+  }
 }
 
 export const useProfileStore = create<ProfileStore>()(
@@ -75,17 +81,24 @@ export const useProfileStore = create<ProfileStore>()(
       profile: DEFAULT_PROFILE,
       isLoaded: false,
 
-      updateProfile: (updates, userId) =>
+      updateProfile: (updates: Partial<UserProfile>, userId?: string) =>
         set((state) => {
           const updated = { ...state.profile, ...updates };
           if (userId) saveProfileToSupabase(updated, userId);
           return { profile: updated };
         }),
 
-      completeOnboarding: (userId) =>
+      completeOnboarding: (userId?: string) =>
         set((state) => {
           const updated = { ...state.profile, hasCompletedOnboarding: true };
-          if (userId) saveProfileToSupabase(updated, userId);
+          if (userId) {
+            console.log(
+              "[completeOnboarding] Marking onboarding complete for user:",
+              userId,
+              updated,
+            );
+            saveProfileToSupabase(updated, userId);
+          }
           return { profile: updated };
         }),
 
@@ -130,3 +143,11 @@ export const useProfileStore = create<ProfileStore>()(
     },
   ),
 );
+// Expose store globally for debugging and onboarding reload
+if (typeof window !== "undefined") {
+  // @ts-ignore
+  window.__profileStore = {
+    loadFromSupabase: (userId: string) =>
+      useProfileStore.getState().loadFromSupabase(userId),
+  };
+}
