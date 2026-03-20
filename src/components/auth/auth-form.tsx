@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
-import { Briefcase, Loader2 } from "lucide-react";
+import { GraduationCap, Loader2 } from "lucide-react";
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -49,10 +49,11 @@ export function AuthForm({ mode }: AuthFormProps) {
       <div className="w-full max-w-sm">
         {/* branding */}
         <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-primary-foreground mb-3">
-            <Briefcase size={24} />
+          <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br from-primary to-blue-600 text-primary-foreground mb-3 shadow-lg btn-primary-glow">
+            <GraduationCap size={28} />
           </div>
-          <h1 className="text-2xl font-bold text-foreground">JobTracker</h1>
+          <h1 className="text-2xl font-bold text-foreground">Cebisa</h1>
+          <p className="text-xs text-muted-foreground">Career Builder</p>
           <p className="text-sm text-muted-foreground mt-1">
             {mode === "login" ? "Welcome back" : "Create your account"}
           </p>
@@ -95,7 +96,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-linear-to-r from-primary to-blue-600 text-primary-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition-all btn-primary-glow"
           >
             {loading && <Loader2 size={16} className="animate-spin" />}
             {mode === "login" ? "Sign In" : "Sign Up"}

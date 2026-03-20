@@ -1,15 +1,18 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import { Providers } from '@/components/providers';
-import './globals.css';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Providers } from "@/components/providers";
+import "./globals.css";
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'JobTracker — Track Your Job Applications',
+  title: "Cebisa Career Builder — Your Career Development Platform",
   description:
-    'A personal Kanban board for managing your job search. Track applications from wishlist to offer.',
+    "A career development platform to track job applications, identify skill gaps, and discover learning paths.",
 };
 
 export default function RootLayout({

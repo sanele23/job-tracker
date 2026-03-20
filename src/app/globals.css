@@ -14,9 +14,11 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-fg);
+  --color-primary-light: var(--primary-light);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-fg);
   --color-destructive: var(--destructive);
+  --color-surface: var(--surface);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -24,34 +26,38 @@
 
 /* ── light palette ── */
 :root {
-  --bg:          #fafafa;
-  --fg:          #0a0a0a;
-  --card:        #ffffff;
-  --card-fg:     #0a0a0a;
-  --muted:       #f1f5f9;
-  --muted-fg:    #64748b;
-  --border:      #e2e8f0;
-  --primary:     #6366f1;
-  --primary-fg:  #ffffff;
-  --accent:      #f1f5f9;
-  --accent-fg:   #0f172a;
+  --bg: #f5f7fb;
+  --fg: #1a2035;
+  --card: #ffffff;
+  --card-fg: #1a2035;
+  --muted: #eef1f8;
+  --muted-fg: #6b7a99;
+  --border: #e1e6f0;
+  --primary: #4f6ef7;
+  --primary-fg: #ffffff;
+  --primary-light: #eef1ff;
+  --accent: #eef1f8;
+  --accent-fg: #1a2035;
   --destructive: #ef4444;
+  --surface: #ffffff;
 }
 
 /* ── dark palette ── */
 .dark {
-  --bg:          #09090b;
-  --fg:          #fafafa;
-  --card:        #18181b;
-  --card-fg:     #fafafa;
-  --muted:       #27272a;
-  --muted-fg:    #a1a1aa;
-  --border:      #27272a;
-  --primary:     #818cf8;
-  --primary-fg:  #ffffff;
-  --accent:      #27272a;
-  --accent-fg:   #fafafa;
+  --bg: #0b0f1a;
+  --fg: #e8ecf4;
+  --card: #141929;
+  --card-fg: #e8ecf4;
+  --muted: #1c2236;
+  --muted-fg: #8892ab;
+  --border: #1e2740;
+  --primary: #6b8aff;
+  --primary-fg: #ffffff;
+  --primary-light: #1a2352;
+  --accent: #1c2236;
+  --accent-fg: #e8ecf4;
   --destructive: #f87171;
+  --surface: #141929;
 }
 
 /* ── base resets ── */
@@ -61,12 +67,56 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+/* ── brand button glow ── */
+.btn-primary-glow {
+  box-shadow: 0 4px 14px 0 rgba(79, 110, 247, 0.35);
+}
+.btn-primary-glow:hover {
+  box-shadow: 0 6px 20px 0 rgba(79, 110, 247, 0.5);
+}
+.dark .btn-primary-glow {
+  box-shadow: 0 4px 14px 0 rgba(107, 138, 255, 0.3);
+}
+.dark .btn-primary-glow:hover {
+  box-shadow: 0 6px 20px 0 rgba(107, 138, 255, 0.45);
+}
+
+/* ── sidebar active left-bar accent ── */
+.sidebar-active {
+  position: relative;
+}
+.sidebar-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--primary);
+}
+
 /* hide scrollbar but keep scrollability (kanban row) */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* nice custom scrollbar for the board */
-::-webkit-scrollbar { height: 6px; width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted-fg); }
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-fg);
+}
