@@ -43,10 +43,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get initial session
     supabase.auth.getUser().then(({ data: { user } }) => {
+      const lastUserId = localStorage.getItem("cebisa-last-user-id");
       setUser(user);
       setLoading(false);
-      // Always rehydrate all stores from Supabase for this user
       if (user) {
+        // If user changed, clear all persisted state
+        if (lastUserId && lastUserId !== user.id) {
+          useProfileStore.persist.clearStorage?.();
+          useCareerStore.persist.clearStorage?.();
+          useJobStore.persist.clearStorage?.();
+        }
+        localStorage.setItem("cebisa-last-user-id", user.id);
         useProfileStore.getState().loadFromSupabase(user.id);
         useCareerStore.getState().loadFromSupabase(user.id);
         useJobStore.getState().loadFromSupabase(user.id);
@@ -57,9 +64,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      const lastUserId = localStorage.getItem("cebisa-last-user-id");
       setUser(session?.user ?? null);
-      // Always rehydrate all stores from Supabase for this user
       if (session?.user) {
+        if (lastUserId && lastUserId !== session.user.id) {
+          useProfileStore.persist.clearStorage?.();
+          useCareerStore.persist.clearStorage?.();
+          useJobStore.persist.clearStorage?.();
+        }
+        localStorage.setItem("cebisa-last-user-id", session.user.id);
         useProfileStore.getState().loadFromSupabase(session.user.id);
         useCareerStore.getState().loadFromSupabase(session.user.id);
         useJobStore.getState().loadFromSupabase(session.user.id);
