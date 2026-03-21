@@ -188,8 +188,11 @@ export default function OnboardingPage() {
   };
 
   const finish = () => {
-    // Save profile and mark onboarding complete, then reload profile from Supabase to ensure state is synced
-    updateProfile(form as UserProfile, user?.id);
+    // Save profile and mark onboarding complete (update store immediately)
+    updateProfile(
+      { ...form, hasCompletedOnboarding: true } as UserProfile,
+      user?.id,
+    );
     completeOnboarding(user?.id);
 
     // Auto-set a target role based on first interest
@@ -208,16 +211,6 @@ export default function OnboardingPage() {
       };
       const defaultRole = interestMap[form.interests[0]];
       if (defaultRole) setTargetRole(defaultRole, user?.id);
-    }
-
-    // Reload profile from Supabase to ensure onboarding state is up-to-date
-    if (user?.id) {
-      setTimeout(() => {
-        // Delay to allow upsert to complete
-        if (typeof window !== "undefined" && window.__profileStore) {
-          window.__profileStore.loadFromSupabase(user.id);
-        }
-      }, 500);
     }
 
     router.push("/");

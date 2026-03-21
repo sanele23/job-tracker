@@ -145,7 +145,6 @@ export const useProfileStore = create<ProfileStore>()(
 );
 // Expose store globally for debugging and onboarding reload
 if (typeof window !== "undefined") {
-  // @ts-ignore
   window.__profileStore = {
     loadFromSupabase: (userId: string) =>
       useProfileStore.getState().loadFromSupabase(userId),
