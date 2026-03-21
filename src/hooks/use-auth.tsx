@@ -10,6 +10,9 @@ import {
 } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { useProfileStore } from "@/store/profile-store";
+import { useCareerStore } from "@/store/career-store";
+import { useJobStore } from "@/store/job-store";
 import type { User } from "@supabase/supabase-js";
 
 interface AuthContext {
@@ -59,6 +62,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
+    // Reset all persisted stores and clear localStorage for user data
+    useProfileStore.persist.clearStorage?.();
+    useCareerStore.persist.clearStorage?.();
+    useJobStore.persist.clearStorage?.();
+    // Optionally, clear all localStorage (uncomment if needed)
+    // localStorage.clear();
     window.location.href = "/login";
   }, [isSupabase]);
 
