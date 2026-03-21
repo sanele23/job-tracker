@@ -45,6 +45,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       setLoading(false);
+      // Always rehydrate all stores from Supabase for this user
+      if (user) {
+        useProfileStore.getState().loadFromSupabase(user.id);
+        useCareerStore.getState().loadFromSupabase(user.id);
+        useJobStore.getState().loadFromSupabase(user.id);
+      }
     });
 
     // Listen for auth changes
@@ -52,6 +58,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      // Always rehydrate all stores from Supabase for this user
+      if (session?.user) {
+        useProfileStore.getState().loadFromSupabase(session.user.id);
+        useCareerStore.getState().loadFromSupabase(session.user.id);
+        useJobStore.getState().loadFromSupabase(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -66,9 +78,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useProfileStore.persist.clearStorage?.();
     useCareerStore.persist.clearStorage?.();
     useJobStore.persist.clearStorage?.();
-    // Optionally, clear all localStorage (uncomment if needed)
-    // localStorage.clear();
-    window.location.href = "/login";
+    // Force reload of the page to ensure all state is reset
+    window.location.replace("/login");
   }, [isSupabase]);
 
   return (
